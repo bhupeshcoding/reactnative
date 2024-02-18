@@ -18,6 +18,11 @@ export default function App() {
   const [enteredGoalText, setEnteredGoalText] = useState('');
   const [courseGoals, setCourseGoals] = useState([]);
 
+
+  function deleteGoalHandler(id){
+      setCourseGoals(currentCourseGoals=>currentCourseGoals.filter((goal)=>goal.id!==id))
+  }
+
   function goalInputHandler(enteredText) {
     setEnteredGoalText(enteredText);
   }
@@ -41,6 +46,7 @@ export default function App() {
   return (
     <View style={styles.appContainer}>
          <GoalInput
+         
         style={{
           inputContainer: styles.inputContainer,  
           textInput: styles.textInput,
@@ -48,19 +54,23 @@ export default function App() {
         goalInputHandler={goalInputHandler}
         addGoalHandler={addGoalHandler}
         enteredGoalText={enteredGoalText}
+        
       />
       <View style={styles.goalsContainer}>
         <FlatList
           data={courseGoals}
           renderItem={(itemData) => (
             <GoalItem
-            goal={itemData.item}
-            style={{
-              goalItem: styles.goalItem,
-              goalText: styles.goalText,
-              goalImage: styles.goalImage,
-            }}
-          />
+  id={itemData.item.id}
+  goal={itemData.item}
+  style={{
+    goalItem: styles.goalItem,
+    goalText: styles.goalText,
+    goalImage: styles.goalImage,
+  }}
+  onDeleteItem={deleteGoalHandler} // Passing deleteGoalHandler here
+/>
+
         )}
         keyExtractor={(item, index) => item.id}
         alwaysBounceVertical={false}
